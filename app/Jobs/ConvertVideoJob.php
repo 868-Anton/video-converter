@@ -24,9 +24,7 @@ class ConvertVideoJob implements ShouldQueue
 
     public int $tries = 1;
 
-    public function __construct(public VideoConversion $videoConversion)
-    {
-    }
+    public function __construct(public VideoConversion $videoConversion) {}
 
     public function handle(VideoConverterService $videoConverterService): void
     {
@@ -36,8 +34,12 @@ class ConvertVideoJob implements ShouldQueue
             ]);
 
             $result = $videoConverterService->convertToTargetSize(
-                $this->videoConversion->input_path,
-                $this->videoConversion->target_size_mb,
+                inputDisk: $this->videoConversion->input_disk,
+                inputPath: $this->videoConversion->input_path,
+                outputDisk: $this->videoConversion->output_disk,
+                outputPath: $this->videoConversion->output_path,
+                targetSizeMB: $this->videoConversion->target_size_mb,
+                audioBitrate: $this->videoConversion->audio_bitrate_kbps,
             );
 
             $this->videoConversion->update([
