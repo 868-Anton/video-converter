@@ -115,7 +115,39 @@
                     </div>
                 </div>
             @else
-                <div class="space-y-4">
+                <div
+                    class="space-y-4"
+                    x-data="{
+                        copiedCommand: null,
+                        async copyCommand(command) {
+                            try {
+                                if (navigator.clipboard && window.isSecureContext) {
+                                    await navigator.clipboard.writeText(command);
+                                } else {
+                                    const textarea = document.createElement('textarea');
+                                    textarea.value = command;
+                                    textarea.setAttribute('readonly', '');
+                                    textarea.style.position = 'absolute';
+                                    textarea.style.left = '-9999px';
+                                    document.body.appendChild(textarea);
+                                    textarea.select();
+                                    document.execCommand('copy');
+                                    document.body.removeChild(textarea);
+                                }
+
+                                this.copiedCommand = command;
+
+                                setTimeout(() => {
+                                    if (this.copiedCommand === command) {
+                                        this.copiedCommand = null;
+                                    }
+                                }, 1500);
+                            } catch (error) {
+                                console.error(error);
+                            }
+                        }
+                    }"
+                >
                     {{-- Prerequisites --}}
                     <div class="rounded-2xl border border-gray-200 bg-white p-6 shadow-sm dark:border-white/5 dark:bg-white/5 dark:shadow-none">
                         <div class="flex items-center gap-3 mb-4">
@@ -154,14 +186,48 @@
                                     <span class="text-primary-600 dark:text-primary-400">&gt;_</span>
                                     <span>php artisan migrate</span>
                                 </div>
-                                <x-filament::icon icon="heroicon-o-document-duplicate" class="size-4 text-gray-400" />
+                                <button
+                                    type="button"
+                                    class="rounded p-1 text-gray-400 transition hover:text-primary-600 dark:hover:text-primary-400"
+                                    @click="copyCommand('php artisan migrate')"
+                                    aria-label="Copy php artisan migrate command"
+                                    title="Copy command"
+                                >
+                                    <x-filament::icon
+                                        icon="heroicon-o-document-duplicate"
+                                        class="size-4"
+                                        x-show="copiedCommand !== 'php artisan migrate'"
+                                    />
+                                    <x-filament::icon
+                                        icon="heroicon-o-check"
+                                        class="size-4 text-success-600 dark:text-success-400"
+                                        x-show="copiedCommand === 'php artisan migrate'"
+                                    />
+                                </button>
                             </div>
                             <div class="flex items-center justify-between rounded-lg border border-gray-200 bg-gray-50 px-4 py-3 dark:border-white/5 dark:bg-white/5">
                                 <div class="flex items-center gap-3 font-mono text-sm text-gray-800 dark:text-gray-300">
                                     <span class="text-primary-600 dark:text-primary-400">&gt;_</span>
                                     <span>php artisan make:filament-user</span>
                                 </div>
-                                <x-filament::icon icon="heroicon-o-document-duplicate" class="size-4 text-gray-400" />
+                                <button
+                                    type="button"
+                                    class="rounded p-1 text-gray-400 transition hover:text-primary-600 dark:hover:text-primary-400"
+                                    @click="copyCommand('php artisan make:filament-user')"
+                                    aria-label="Copy php artisan make:filament-user command"
+                                    title="Copy command"
+                                >
+                                    <x-filament::icon
+                                        icon="heroicon-o-document-duplicate"
+                                        class="size-4"
+                                        x-show="copiedCommand !== 'php artisan make:filament-user'"
+                                    />
+                                    <x-filament::icon
+                                        icon="heroicon-o-check"
+                                        class="size-4 text-success-600 dark:text-success-400"
+                                        x-show="copiedCommand === 'php artisan make:filament-user'"
+                                    />
+                                </button>
                             </div>
                         </div>
                     </div>
@@ -183,7 +249,24 @@
                                 <span class="text-primary-600 dark:text-primary-400">&gt;_</span>
                                 <span>php artisan queue:work --timeout=3600 --memory=512</span>
                             </div>
-                            <x-filament::icon icon="heroicon-o-document-duplicate" class="size-4 text-gray-400" />
+                            <button
+                                type="button"
+                                class="rounded p-1 text-gray-400 transition hover:text-primary-600 dark:hover:text-primary-400"
+                                @click="copyCommand('php artisan queue:work --timeout=3600 --memory=512')"
+                                aria-label="Copy php artisan queue:work command"
+                                title="Copy command"
+                            >
+                                <x-filament::icon
+                                    icon="heroicon-o-document-duplicate"
+                                    class="size-4"
+                                    x-show="copiedCommand !== 'php artisan queue:work --timeout=3600 --memory=512'"
+                                />
+                                <x-filament::icon
+                                    icon="heroicon-o-check"
+                                    class="size-4 text-success-600 dark:text-success-400"
+                                    x-show="copiedCommand === 'php artisan queue:work --timeout=3600 --memory=512'"
+                                />
+                            </button>
                         </div>
                     </div>
 
