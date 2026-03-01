@@ -1,0 +1,29 @@
+---
+description: Remind to run Herd link for new or moved Laravel apps
+alwaysApply: true
+---
+
+# Laravel New Project Flow Reminder
+
+When the user mentions creating a new Laravel project, moving a project into nested folders, or a Herd app not appearing, remind them of the full setup flow in this order:
+
+```bash
+cd "/path/to/project"
+composer install
+cp .env.example .env
+php artisan key:generate
+php artisan migrate
+herd link
+```
+
+If the project is inside a deeper folder under a Herd parent directory, also suggest running:
+
+```bash
+cd "/path/to/parent-folder"
+herd link
+```
+
+If frontend assets are missing, remind the user to run one of:
+- `npm run dev`
+- `npm run build`
+- `composer run dev`
