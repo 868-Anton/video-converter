@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <!-- Background -->
+  <circle cx="32" cy="32" r="30" fill="#0F172A"/>
+  
+  <!-- Play Triangle -->
+  <polygon points="26,22 46,32 26,42" fill="#38BDF8"/>
+  
+  <!-- Circular Convert Arrow -->
+  <path d="M20 32a12 12 0 0 1 20-8"
+        fill="none"
+        stroke="#F97316"
+        stroke-width="4"
+        stroke-linecap="round"/>
+        
+  <polygon points="38,16 44,16 41,22" fill="#F97316"/>
+</svg>
